@@ -1,0 +1,191 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  Serverless chatbot app using OpenAI API
+Transform:
+  - AWS::Serverless-2016-10-31
+
+Resources:
+  # Api Gateway
+  APIGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Cors: "'*'"
+      Auth:
+        DefaultAuthorizer: CognitoAuthorizer
+        Authorizers:
+          CognitoAuthorizer:
+            UserPoolArn: !GetAtt CognitoUserPool.Arn
+
+  # Rooms CRUD lambda functions with API Gateway endpoints
+  getAllRooms:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./src/lambda_chat_rooms/get_all_rooms/
+      Handler: get-all-rooms.handler
+      Runtime: nodejs18.x
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DynamoDBTable
+      Layers:
+        - !Ref HelpersLayer
+        - !Ref NodeModulesLayer
+      Events:
+        Root:
+          Type: Api
+          Properties:
+            RestApiId: !Ref APIGateway
+            Path: /rooms
+            Method: GET
+            Auth:
+              Authorizer: CognitoAuthorizer
+  getRoomByID:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./src/lambda_chat_rooms/get_room_by_id/
+      Handler: get-room-by-id.handler
+      Runtime: nodejs18.x
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DynamoDBTable
+      Layers:
+        - !Ref HelpersLayer
+        - !Ref NodeModulesLayer
+      Events:
+        Root:
+          Type: Api
+          Properties:
+            RestApiId: !Ref APIGateway
+            Path: /rooms/{id}
+            Method: GET
+            Auth:
+              Authorizer: CognitoAuthorizer
+  createRoom:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./src/lambda_chat_rooms/create_room/
+      Handler: create-room.handler
+      Runtime: nodejs18.x
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DynamoDBTable
+      Layers:
+        - !Ref HelpersLayer
+        - !Ref NodeModulesLayer
+      Events:
+        Root:
+          Type: Api
+          Properties:
+            RestApiId: !Ref APIGateway
+            Path: /rooms
+            Method: POST
+            Auth:
+              Authorizer: CognitoAuthorizer
+  updateRoom:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./src/lambda_chat_rooms/update_room/
+      Handler: update-room.handler
+      Runtime: nodejs18.x
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DynamoDBTable
+      Layers:
+        - !Ref HelpersLayer
+        - !Ref NodeModulesLayer
+      Events:
+        Root:
+          Type: Api
+          Properties:
+            RestApiId: !Ref APIGateway
+            Path: /rooms/{id}
+            Method: PUT
+            Auth:
+              Authorizer: CognitoAuthorizer
+  deleteRoom:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./src/lambda_chat_rooms/delete_room/
+      Handler: delete-room.handler
+      Runtime: nodejs18.x
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DynamoDBTable
+      Layers:
+        - !Ref HelpersLayer
+        - !Ref NodeModulesLayer
+      Events:
+        Root:
+          Type: Api
+          Properties:
+            RestApiId: !Ref APIGateway
+            Path: /rooms/{id}
+            Method: DELETE
+            Auth:
+              Authorizer: CognitoAuthorizer
+
+  # Layers
+  HelpersLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: !Sub "${AWS::StackName}-helpers-layer"
+      Description: "Helpers functions layer"
+      ContentUri: ./src/layers/helpers/
+      CompatibleRuntimes:
+        - nodejs18.x
+  NodeModulesLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: !Sub "${AWS::StackName}-node-modules-layer"
+      Description: "Node modules layer"
+      ContentUri: ./src/layers/common/archive.zip
+      CompatibleRuntimes:
+        - nodejs18.x
+  
+  # Cognito User Pool
+  CognitoUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: !Sub "${AWS::StackName}-UserPool"
+      UsernameAttributes:
+        - email
+      Schema:
+        - Name: email
+          AttributeDataType: String
+          Required: true
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+
+  # Cognito User Pool Client
+  CognitoUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      ClientName: !Sub "${AWS::StackName}-UserPoolClient"
+      UserPoolId: !Ref CognitoUserPool
+      GenerateSecret: false
+      ExplicitAuthFlows:
+        - ALLOW_USER_PASSWORD_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+
+  # Chat rooms database
+  DynamoDBTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: ID
+        Type: String
+      TableName: !Sub "${AWS::StackName}-chat-rooms"
+
+Outputs:
+  WebEndpoint:
+    Description: "API Gateway endpoint URL for Prod stage"
+    Value: !Sub "https://${APIGateway}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+
+  CognitoUserPoolId:
+    Description: "Cognito User Pool ID"
+    Value: !Ref CognitoUserPool
+
+  CognitoUserPoolClientId:
+    Description: "Cognito User Pool Client ID"
+    Value: !Ref CognitoUserPoolClient
