@@ -4,6 +4,10 @@ Description: >-
 Transform:
   - AWS::Serverless-2016-10-31
 
+Parameters:
+  OpenAiApiKey:
+    Type: String
+
 Resources:
   # Api Gateway
   APIGateway:
@@ -121,6 +125,33 @@ Resources:
             RestApiId: !Ref APIGateway
             Path: /rooms/{id}
             Method: DELETE
+            Auth:
+              Authorizer: CognitoAuthorizer
+
+  # Chat message endpoint
+  chatPrompt:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./src/lambda_chat/
+      Handler: index.handler
+      Runtime: nodejs18.x
+      Timeout: 30
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DynamoDBTable
+      Layers:
+        - !Ref HelpersLayer
+        - !Ref NodeModulesLayer
+      Environment:
+        Variables:
+          OPENAI_API_KEY: !Ref OpenAiApiKey
+      Events:
+        Root:
+          Type: Api
+          Properties:
+            RestApiId: !Ref APIGateway
+            Path: /chat
+            Method: POST
             Auth:
               Authorizer: CognitoAuthorizer
 
