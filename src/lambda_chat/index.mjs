@@ -52,7 +52,7 @@ export const handler = async (event) => {
 			CreatedAt: new Date().toISOString(),
 		});
 
-		dynamodb
+		await dynamodb
 			.update({
 				TableName: "chatbot-chat-rooms",
 				Key: {
