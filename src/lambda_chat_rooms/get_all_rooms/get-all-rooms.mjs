@@ -7,7 +7,7 @@ export const handler = async (event) => {
 
 	try {
 		// Get user ID
-		const user_id = getCurrentUserID(event.requestContext);
+		const userId = getCurrentUserID(event.requestContext);
 
 		// Get user chat rooms
 		const result = await dynamodb
@@ -15,7 +15,7 @@ export const handler = async (event) => {
 				TableName: "chatbot-chat-rooms",
 				FilterExpression: "UserID = :user_id",
 				ExpressionAttributeValues: {
-					":user_id": user_id,
+					":user_id": userId,
 				},
 			})
 			.promise();

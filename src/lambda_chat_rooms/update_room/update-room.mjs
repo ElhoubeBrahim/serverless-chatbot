@@ -6,10 +6,10 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 export const handler = async (event) => {
 	try {
 		// Get user ID
-		const user_id = getCurrentUserID(event.requestContext);
+		const userId = getCurrentUserID(event.requestContext);
 
 		// Get room ID
-		const room_id = event.pathParameters.id;
+		const roomId = event.pathParameters.id;
 
 		// Get & validate room title
 		const title = event.body ? JSON.parse(event.body).title : null;
@@ -27,18 +27,18 @@ export const handler = async (event) => {
 			.get({
 				TableName: "chatbot-chat-rooms",
 				Key: {
-					ID: room_id,
+					ID: roomId,
 				},
 			})
 			.promise();
 
 		// Check if chat room exists
 		// and if it belongs to the current user
-		if (!room || !room.Item || room.Item.UserID !== user_id) {
+		if (!room || !room.Item || room.Item.UserID !== userId) {
 			return {
 				statusCode: 404,
 				body: JSON.stringify({
-					message: `Chat room "${room_id}" not found`,
+					message: `Chat room "${roomId}" not found`,
 				}),
 			};
 		}
@@ -48,7 +48,7 @@ export const handler = async (event) => {
 			.update({
 				TableName: "chatbot-chat-rooms",
 				Key: {
-					ID: room_id,
+					ID: roomId,
 				},
 				UpdateExpression: "set Title = :title, UpdatedAt = :updatedAt",
 				ExpressionAttributeValues: {

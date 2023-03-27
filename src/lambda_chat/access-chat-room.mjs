@@ -2,17 +2,17 @@ import AWS from "aws-sdk";
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
-export const accessChatRoom = async (room_id, user_id) => {
+export const accessChatRoom = async (roomId, userId) => {
 	const room = await dynamodb
 		.get({
 			TableName: "chatbot-chat-rooms",
 			Key: {
-				ID: room_id,
+				ID: roomId,
 			},
 		})
 		.promise();
 
-	if (!room.Item || room.Item.UserID !== user_id) return null;
+	if (!room.Item || room.Item.UserID !== userId) return null;
 
 	return room.Item;
 };

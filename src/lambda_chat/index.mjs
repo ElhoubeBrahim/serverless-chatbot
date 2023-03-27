@@ -9,11 +9,11 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 export const handler = async (event) => {
 	try {
 		// Get user ID
-		const user_id = getCurrentUserID(event.requestContext);
+		const userId = getCurrentUserID(event.requestContext);
 
 		// Get and validate data
 		const body = event.body ? JSON.parse(event.body) : {};
-		const room_id = body.room;
+		const roomId = body.room;
 		const prompt = body.prompt;
 
 		if (!prompt) {
@@ -25,8 +25,8 @@ export const handler = async (event) => {
 			};
 		}
 
-		const chat_room = await accessChatRoom(room_id, user_id);
-		if (chat_room === null) {
+		const chatRoom = await accessChatRoom(roomId, userId);
+		if (chatRoom === null) {
 			return {
 				statusCode: 400,
 				body: JSON.stringify({
@@ -43,7 +43,7 @@ export const handler = async (event) => {
 
 		// Save response to database
 		const content = response.choices[0].text.trim();
-		chat_room.Chat.push({
+		chatRoom.Chat.push({
 			ID: uuidv4(),
 			Prompt: prompt,
 			Response: content,
@@ -56,11 +56,11 @@ export const handler = async (event) => {
 			.update({
 				TableName: "chatbot-chat-rooms",
 				Key: {
-					ID: room_id,
+					ID: roomId,
 				},
 				UpdateExpression: "set Chat = :chat, UpdatedAt = :updatedAt",
 				ExpressionAttributeValues: {
-					":chat": chat_room.Chat,
+					":chat": chatRoom.Chat,
 					":updatedAt": new Date().toISOString(),
 				},
 				ReturnValues: "ALL_NEW",

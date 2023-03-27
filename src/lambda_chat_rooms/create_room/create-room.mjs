@@ -7,7 +7,7 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 export const handler = async (event) => {
 	try {
 		// Get user ID
-		const user_id = getCurrentUserID(event.requestContext);
+		const userId = getCurrentUserID(event.requestContext);
 
 		// Get & validate room title
 		const title = event.body ? JSON.parse(event.body).title : null;
@@ -21,10 +21,10 @@ export const handler = async (event) => {
 		}
 
 		// Create chat room
-		const room_id = uuidv4();
-		const room_data = {
-			ID: room_id,
-			UserID: user_id,
+		const roomId = uuidv4();
+		const roomData = {
+			ID: roomId,
+			UserID: userId,
 			Title: title,
 			Chat: [],
 			CreatedAt: new Date().toISOString(),
@@ -33,7 +33,7 @@ export const handler = async (event) => {
 		const result = await dynamodb
 			.put({
 				TableName: "chatbot-chat-rooms",
-				Item: room_data,
+				Item: roomData,
 			})
 			.promise();
 
@@ -45,7 +45,7 @@ export const handler = async (event) => {
 			statusCode: 200,
 			body: JSON.stringify({
 				message: `Chat room "${title}" created successfully`,
-				room: room_data,
+				room: roomData,
 			}),
 		};
 	} catch (error) {
