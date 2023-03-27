@@ -1,0 +1,19 @@
+{
+  "name": "chatbot",
+  "version": "1.0.0",
+  "description": "Serverless chatbot app using AWS SAM & OpenAI API",
+  "scripts": {
+    "dev": "python3 ./scripts/local.py",
+    "deploy": "python3 ./scripts/deploy.py"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ElhoubeBrahim/serverless-chatbot.git"
+  },
+  "author": "Brahim Elhoube",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ElhoubeBrahim/serverless-chatbot/issues"
+  },
+  "homepage": "https://github.com/ElhoubeBrahim/serverless-chatbot#readme"
+}
