@@ -173,6 +173,32 @@ Resources:
             Auth:
               Authorizer: CognitoAuthorizer
 
+  # Rate response endpoint
+  RateResponse:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./src/lambda_rate_response/
+      Handler: index.handler
+      Runtime: nodejs18.x
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DynamoDBTable
+      Layers:
+        - !Ref HelpersLayer
+        - !Ref NodeModulesLayer
+      Environment:
+        Variables:
+          CHAT_ROOMS_TABLE: !Ref ChatRoomsTable
+      Events:
+        Root:
+          Type: Api
+          Properties:
+            RestApiId: !Ref APIGateway
+            Path: /chat/rate
+            Method: POST
+            Auth:
+              Authorizer: CognitoAuthorizer
+
   # Layers
   HelpersLayer:
     Type: AWS::Serverless::LayerVersion
