@@ -15,8 +15,7 @@ with open('env.json') as f:
 
     for key, value in params.items():
         key = camelCase(key)
-        print(key, value)
-        env += key + "=" + value + ","
+        env += key + "=" + value + " "
 
     env = env[:-1]
 
