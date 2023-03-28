@@ -32,7 +32,7 @@ export const handler = async (event) => {
 		};
 		const result = await dynamodb
 			.put({
-				TableName: "chatbot-chat-rooms",
+				TableName: process.env.CHAT_ROOMS_TABLE,
 				Item: roomData,
 			})
 			.promise();

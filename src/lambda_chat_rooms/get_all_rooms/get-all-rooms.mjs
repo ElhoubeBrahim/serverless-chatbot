@@ -12,7 +12,7 @@ export const handler = async (event) => {
 		// Get user chat rooms
 		const result = await dynamodb
 			.scan({
-				TableName: "chatbot-chat-rooms",
+				TableName: process.env.CHAT_ROOMS_TABLE,
 				FilterExpression: "UserID = :user_id",
 				ExpressionAttributeValues: {
 					":user_id": userId,

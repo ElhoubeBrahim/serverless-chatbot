@@ -7,6 +7,8 @@ Transform:
 Parameters:
   OpenaiApiKey:
     Type: String
+  ChatRoomsTable:
+    Type: String
 
 Resources:
   # Api Gateway
@@ -34,6 +36,9 @@ Resources:
       Layers:
         - !Ref HelpersLayer
         - !Ref NodeModulesLayer
+      Environment:
+        Variables:
+          CHAT_ROOMS_TABLE: !Ref ChatRoomsTable
       Events:
         Root:
           Type: Api
@@ -55,6 +60,9 @@ Resources:
       Layers:
         - !Ref HelpersLayer
         - !Ref NodeModulesLayer
+      Environment:
+        Variables:
+          CHAT_ROOMS_TABLE: !Ref ChatRoomsTable
       Events:
         Root:
           Type: Api
@@ -76,6 +84,9 @@ Resources:
       Layers:
         - !Ref HelpersLayer
         - !Ref NodeModulesLayer
+      Environment:
+        Variables:
+          CHAT_ROOMS_TABLE: !Ref ChatRoomsTable
       Events:
         Root:
           Type: Api
@@ -97,6 +108,9 @@ Resources:
       Layers:
         - !Ref HelpersLayer
         - !Ref NodeModulesLayer
+      Environment:
+        Variables:
+          CHAT_ROOMS_TABLE: !Ref ChatRoomsTable
       Events:
         Root:
           Type: Api
@@ -118,6 +132,9 @@ Resources:
       Layers:
         - !Ref HelpersLayer
         - !Ref NodeModulesLayer
+      Environment:
+        Variables:
+          CHAT_ROOMS_TABLE: !Ref ChatRoomsTable
       Events:
         Root:
           Type: Api
@@ -145,6 +162,7 @@ Resources:
       Environment:
         Variables:
           OPENAI_API_KEY: !Ref OpenaiApiKey
+          CHAT_ROOMS_TABLE: !Ref ChatRoomsTable
       Events:
         Root:
           Type: Api
@@ -172,7 +190,7 @@ Resources:
       ContentUri: ./src/layers/common/archive.zip
       CompatibleRuntimes:
         - nodejs18.x
-  
+
   # Cognito User Pool
   CognitoUserPool:
     Type: AWS::Cognito::UserPool

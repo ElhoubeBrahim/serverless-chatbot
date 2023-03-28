@@ -5,7 +5,7 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 export const accessChatRoom = async (roomId, userId) => {
 	const room = await dynamodb
 		.get({
-			TableName: "chatbot-chat-rooms",
+			TableName: process.env.CHAT_ROOMS_TABLE,
 			Key: {
 				ID: roomId,
 			},

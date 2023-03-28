@@ -25,7 +25,7 @@ export const handler = async (event) => {
 		// Get target chat room
 		const room = await dynamodb
 			.get({
-				TableName: "chatbot-chat-rooms",
+				TableName: process.env.CHAT_ROOMS_TABLE,
 				Key: {
 					ID: roomId,
 				},
@@ -46,7 +46,7 @@ export const handler = async (event) => {
 		// Update chat room
 		const result = await dynamodb
 			.update({
-				TableName: "chatbot-chat-rooms",
+				TableName: process.env.CHAT_ROOMS_TABLE,
 				Key: {
 					ID: roomId,
 				},
