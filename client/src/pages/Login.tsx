@@ -54,7 +54,7 @@ function Login() {
                 </a>
               </div>
             </div>
-            <PrimaryButton />
+            <PrimaryButton text='Login' align='center' />
           </div>
         </div>
       </div>
