@@ -21,11 +21,11 @@ const Input: FC<InputProps> = (inputProps: InputProps) => {
   return (
     <div className='relative w-full'>
       {preIcon && (
-        <div className='absolute left-2 top-2 text-primary'>{preIcon}</div>
+        <div className='absolute left-2 top-[50%] translate-y-[-50%] text-primary'>{preIcon}</div>
       )}
       <input {...props} />
       {postIcon && (
-        <div className='absolute right-2 top-2 text-primary'>{postIcon}</div>
+        <div className='absolute right-2 top-[50%] translate-y-[-50%] text-primary'>{postIcon}</div>
       )}
     </div>
   );
