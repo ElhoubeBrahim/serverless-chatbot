@@ -5,6 +5,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faEye,
   faLock,
+  faPaperPlane,
   faPencilAlt,
   faPlus,
   faSignOutAlt,
@@ -15,8 +16,20 @@ import {
 import Login from './pages/Login';
 import ChatHome from './pages/ChatHome';
 import './index.css';
+import ChatMessages from './pages/ChatMessages';
+import Chat from './pages/Chat';
 
-library.add(faUser, faEye, faLock, faPlus, faPencilAlt, faTrashAlt, faSignOutAlt, faStar);
+library.add(
+  faUser,
+  faEye,
+  faLock,
+  faPlus,
+  faPencilAlt,
+  faTrashAlt,
+  faSignOutAlt,
+  faStar,
+  faPaperPlane,
+);
 
 const router = createBrowserRouter([
   {
@@ -25,7 +38,17 @@ const router = createBrowserRouter([
   },
   {
     path: '/chat',
-    element: <ChatHome />,
+    element: <Chat />,
+    children: [
+      {
+        path: '/chat',
+        element: <ChatHome />,
+      },
+      {
+        path: '/chat/:id',
+        element: <ChatMessages />,
+      },
+    ],
   },
 ]);
 

@@ -9,3 +9,16 @@ body {
   font-family: 'Poppins', sans-serif;
   color: #444;
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+img {
+  user-select: none;
+}
