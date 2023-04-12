@@ -4,8 +4,13 @@ import PrimaryButton from '../components/PrimaryButton';
 import loginBackground from '../assets/login-bg.svg';
 import loginDecor from '../assets/login-decor.svg';
 import { useState } from 'react';
+import { login } from '../services/auth';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
+  const navigate = useNavigate();
+
   const [passwordType, setPasswordType] = useState<'password' | 'text'>('password');
   const togglePasswordType = () => {
     setPasswordType(passwordType === 'password' ? 'text' : 'password');
@@ -13,9 +18,26 @@ function Login() {
 
   const inputClasses = 'bg-light text-white placeholder-gray-300';
 
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async () => {
+    setLoading(true);
+
+    if (!email || !password) {
+      toast.error('Please enter your email and password.');
+    } else {
+      await login(email, password);
+      navigate('/chat');
+    }
+
+    setLoading(false);
+  };
+
   return (
     <main
-      className='px-5 py-20 h-screen bg-cover relative overflow-hidden'
+      className='px-5 py-20 h-screen bg-cover relative overflow-hidden bg-secondary'
       style={{
         backgroundImage: `url(${loginBackground})`,
       }}
@@ -32,6 +54,8 @@ function Login() {
                 placeholder='Email'
                 className={inputClasses}
                 preIcon={<FontAwesomeIcon icon='user' className='text-white' />}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className='mb-5 w-full'>
@@ -47,6 +71,8 @@ function Login() {
                     onClick={togglePasswordType}
                   />
                 }
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <div className='flex justify-end m-2'>
                 <a href='#' className='text-sm text-primary underline'>
@@ -54,7 +80,12 @@ function Login() {
                 </a>
               </div>
             </div>
-            <PrimaryButton text='Login' align='center' />
+            <PrimaryButton
+              text={loading ? 'Verifying ...' : 'Login'}
+              align='center'
+              onClick={handleLogin}
+              disabled={loading}
+            />
           </div>
         </div>
       </div>
