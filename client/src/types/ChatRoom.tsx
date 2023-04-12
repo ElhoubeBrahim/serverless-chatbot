@@ -1,8 +1,10 @@
+import ChatMessage from "./ChatMessage";
+
 interface ChatRoom {
     ID: string;
     UserID: string;
     Title: string;
-    Chats: any[];
+    Chats: ChatMessage[];
     CreatedAt: string;
     UpdatedAt: string;
 }
