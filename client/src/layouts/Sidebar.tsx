@@ -5,7 +5,7 @@ import PrimaryButton from '../components/PrimaryButton';
 import UserProfile from '../components/UserProfile';
 import ChatRoom from '../types/ChatRoom';
 
-function Sidebar() {
+function Sidebar({ user }: { user: any }) {
   const [chats, setChats] = useState<ChatRoom[]>([]);
 
   return (
@@ -24,8 +24,8 @@ function Sidebar() {
           </div>
         )}
       </div>
-      <div className="p-3 absolute bottom-0 left-0 right-0 border-t border-light">
-        <UserProfile />
+      <div className='p-3 absolute bottom-0 left-0 right-0 border-t border-light'>
+        <UserProfile user={user} />
       </div>
     </aside>
   );

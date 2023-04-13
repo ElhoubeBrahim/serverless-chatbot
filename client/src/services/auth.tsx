@@ -27,3 +27,12 @@ export const confirmEmail = async (username: string, code: string) => {
     toast.error('Ooops! Something went wrong.');
   }
 };
+
+export const logout = async () => {
+  try {
+    await Auth.signOut();
+  } catch (error) {
+    console.error(error);
+    toast.error('Ooops! Something went wrong.');
+  }
+};
