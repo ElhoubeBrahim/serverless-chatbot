@@ -231,6 +231,8 @@ Resources:
       Policies:
         PasswordPolicy:
           MinimumLength: 8
+      AutoVerifiedAttributes:
+        - email
 
   # Cognito User Pool Client
   CognitoUserPoolClient:
