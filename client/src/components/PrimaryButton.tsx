@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 
 interface PrimaryButtonProps {
   text: string;
+  className?: string;
   align?: 'left' | 'center' | 'right';
   disabled?: boolean;
   postIcon?: ReactNode;
@@ -10,9 +11,8 @@ interface PrimaryButtonProps {
 }
 
 function PrimaryButton(props: PrimaryButtonProps) {
-  const { postIcon, preIcon, text, align, disabled, onClick } = props;
-  let classes =
-    'py-2 px-4 bg-primary text-white w-full rounded font-medium select-none';
+  const { postIcon, preIcon, text, className, align, disabled, onClick } = props;
+  let classes = 'py-2 px-4 bg-primary w-full text-white rounded font-medium select-none';
   classes += align ? ` text-${align}` : ' text-left';
 
   if (disabled) {
@@ -20,6 +20,8 @@ function PrimaryButton(props: PrimaryButtonProps) {
   } else {
     classes += ' hover:shadow-light transition';
   }
+
+  classes += className ? ` ${className}` : '';
 
   return (
     <button className={classes} onClick={onClick}>
