@@ -1,17 +1,24 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
+import { useSetRecoilState } from 'recoil';
 import ChatRoomLink from '../components/ChatRoomLink';
 import PrimaryButton from '../components/PrimaryButton';
 import UserProfile from '../components/UserProfile';
+import { chatRoomFormModalState } from '../store/modals';
 import ChatRoom from '../types/ChatRoom';
 
 function Sidebar({ user }: { user: any }) {
   const [chats, setChats] = useState<ChatRoom[]>([]);
+  const setChatFormModalOpen = useSetRecoilState(chatRoomFormModalState);
 
   return (
     <aside className='bg-secondary text-white fixed w-[400px] top-0 bottom-0'>
       <div className='p-3 border-b border-light'>
-        <PrimaryButton text='New Chat' preIcon={<FontAwesomeIcon icon='plus' />} />
+        <PrimaryButton
+          text='New Chat'
+          preIcon={<FontAwesomeIcon icon='plus' />}
+          onClick={() => setChatFormModalOpen(true)}
+        />
       </div>
       <div className='p-3'>
         {chats && chats.map((chat) => <ChatRoomLink key={chat.ID} chat={chat} />)}

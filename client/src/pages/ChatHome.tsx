@@ -1,6 +1,8 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { useSetRecoilState } from 'recoil';
 import PrimaryButton from '../components/PrimaryButton';
 import WelcomeCard from '../components/WelcomeCard';
+import { chatRoomFormModalState } from '../store/modals';
 
 interface CardContent {
   icon: IconProp;
@@ -8,6 +10,7 @@ interface CardContent {
 }
 
 function ChatHome() {
+  const setChatFormModalOpen = useSetRecoilState(chatRoomFormModalState);
   const cardContents: CardContent[] = [
     {
       icon: 'star',
@@ -43,7 +46,11 @@ function ChatHome() {
         ))}
       </div>
       <div className='mx-auto md:w-1/2'>
-        <PrimaryButton text='Create a chat room' align='center' />
+        <PrimaryButton
+          text='Create a chat room'
+          align='center'
+          onClick={() => setChatFormModalOpen(true)}
+        />
       </div>
     </div>
   );
