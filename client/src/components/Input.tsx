@@ -1,12 +1,13 @@
 import { FC, InputHTMLAttributes, ReactNode } from 'react';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
   postIcon?: ReactNode;
   preIcon?: ReactNode;
 }
 
 const Input: FC<InputProps> = (inputProps: InputProps) => {
-  let { postIcon, preIcon, ...props } = inputProps;
+  let { postIcon, preIcon, label, ...props } = inputProps;
   props.className +=
     ' p-2 w-full rounded border border-primary focus:shadow-light transition outline-none';
 
@@ -20,13 +21,22 @@ const Input: FC<InputProps> = (inputProps: InputProps) => {
 
   return (
     <div className='relative w-full'>
-      {preIcon && (
-        <div className='absolute left-2 top-[50%] translate-y-[-50%] text-primary'>{preIcon}</div>
+      {label && (
+        <label className='block mb-2' htmlFor={props.id}>
+          {label}
+        </label>
       )}
-      <input {...props} />
-      {postIcon && (
-        <div className='absolute right-2 top-[50%] translate-y-[-50%] text-primary'>{postIcon}</div>
-      )}
+      <div className='relative w-full'>
+        {preIcon && (
+          <div className='absolute left-2 top-[50%] translate-y-[-50%] text-primary'>{preIcon}</div>
+        )}
+        <input {...props} />
+        {postIcon && (
+          <div className='absolute right-2 top-[50%] translate-y-[-50%] text-primary'>
+            {postIcon}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
