@@ -1,5 +1,5 @@
 import AWS from "aws-sdk";
-import { getCurrentUserID } from "chatbot-helpers";
+import { getCurrentUserID, response } from "chatbot-helpers";
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
@@ -24,12 +24,9 @@ export const handler = async (event) => {
 		// Check if chat room exists
 		// and if it belongs to the current user
 		if (!room || !room.Item || room.Item.UserID !== userId) {
-			return {
-				statusCode: 404,
-				body: JSON.stringify({
-					message: `Chat room "${roomId}" not found`,
-				}),
-			};
+			return response(404, {
+				message: `Chat room "${roomId}" not found`,
+			});
 		}
 
 		// Delete chat room
@@ -43,20 +40,14 @@ export const handler = async (event) => {
 			})
 			.promise();
 
-		return {
-			statusCode: 200,
-			body: JSON.stringify({
-				message: `Chat room deleted successfully`,
-				room: result.Attributes,
-			}),
-		};
+		return response(200, {
+			message: `Chat room "${room.Item.Title}" deleted successfully`,
+			room: result.Attributes,
+		});
 	} catch (error) {
-		return {
-			statusCode: 500,
-			body: JSON.stringify({
-				message: "Server Error",
-				error: error,
-			}),
-		};
+		return response(500, {
+			message: "Server Error",
+			error: error,
+		});
 	}
 };

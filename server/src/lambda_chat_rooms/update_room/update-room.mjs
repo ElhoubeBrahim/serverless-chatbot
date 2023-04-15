@@ -1,5 +1,5 @@
 import AWS from "aws-sdk";
-import { getCurrentUserID } from "chatbot-helpers";
+import { getCurrentUserID, response } from "chatbot-helpers";
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
@@ -14,12 +14,9 @@ export const handler = async (event) => {
 		// Get & validate room title
 		const title = event.body ? JSON.parse(event.body).title : null;
 		if (!title) {
-			return {
-				statusCode: 400,
-				body: JSON.stringify({
-					message: "Title is required",
-				}),
-			};
+			return response(400, {
+				message: "Title is required",
+			});
 		}
 
 		// Get target chat room
@@ -35,12 +32,9 @@ export const handler = async (event) => {
 		// Check if chat room exists
 		// and if it belongs to the current user
 		if (!room || !room.Item || room.Item.UserID !== userId) {
-			return {
-				statusCode: 404,
-				body: JSON.stringify({
-					message: `Chat room "${roomId}" not found`,
-				}),
-			};
+			return response(404, {
+				message: `Chat room "${roomId}" not found`,
+			});
 		}
 
 		// Update chat room
@@ -63,20 +57,14 @@ export const handler = async (event) => {
 			throw new Error(`Failed to update room "${title}"`);
 		}
 
-		return {
-			statusCode: 200,
-			body: JSON.stringify({
-				message: `Chat room "${title}" updated successfully`,
-				room: result.Attributes,
-			}),
-		};
+		return response(200, {
+			message: `Chat room "${title}" updated successfully`,
+			room: result.Attributes,
+		});
 	} catch (error) {
-		return {
-			statusCode: 500,
-			body: JSON.stringify({
-				message: "Server Error",
-				error: error,
-			}),
-		};
+		return response(500, {
+			message: "Server Error",
+			error: error,
+		});
 	}
 };

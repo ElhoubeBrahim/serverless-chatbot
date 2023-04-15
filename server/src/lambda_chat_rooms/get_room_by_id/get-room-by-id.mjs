@@ -1,5 +1,5 @@
 import AWS from "aws-sdk";
-import { getCurrentUserID } from "chatbot-helpers";
+import { getCurrentUserID, response } from "chatbot-helpers";
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
@@ -24,25 +24,16 @@ export const handler = async (event) => {
 		// Check if chat room does not exist 
 		// Or if the current user is not the owner
 		if (!result.Item || result.Item.UserID !== userId) {
-			return {
-				statusCode: 404,
-				body: JSON.stringify({
-					message: "Room not found",
-				}),
-			};
+			return response(404, {
+				message: `Chat room "${roomId}" not found`,
+			});
 		}
 
-		return {
-			statusCode: 200,
-			body: JSON.stringify(result.Item),
-		};
+		return response(200, result.Item);
 	} catch (error) {
-		return {
-			statusCode: 500,
-			body: JSON.stringify({
-				message: "Server Error",
-				error: error,
-			}),
-		};
+		return response(500, {
+			message: "Server Error",
+			error: error,
+		});
 	}
 };

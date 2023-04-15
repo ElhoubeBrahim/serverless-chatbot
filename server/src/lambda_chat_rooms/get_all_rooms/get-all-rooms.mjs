@@ -1,5 +1,5 @@
 import AWS from "aws-sdk";
-import { getCurrentUserID } from "chatbot-helpers";
+import { getCurrentUserID, response } from "chatbot-helpers";
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
@@ -20,17 +20,12 @@ export const handler = async (event) => {
 			})
 			.promise();
 
-		return {
-			statusCode: 200,
-			body: JSON.stringify(result.Items),
-		};
+		// Return chat rooms
+		return response(200, result.Items)
 	} catch (error) {
-		return {
-			statusCode: 500,
-			body: JSON.stringify({
-				message: "Server Error",
-				error: error,
-			}),
-		};
+		return response(500, {
+			message: "Server Error",
+			error: error,
+		});
 	}
 };

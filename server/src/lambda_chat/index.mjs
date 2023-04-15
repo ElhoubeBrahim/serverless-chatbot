@@ -1,7 +1,7 @@
 import AWS from "aws-sdk";
 import { v4 as uuidv4 } from "uuid";
 import { accessChatRoom } from "./access-chat-room.mjs";
-import { getCurrentUserID } from "chatbot-helpers";
+import { getCurrentUserID, response } from "chatbot-helpers";
 import { getResponse } from "./openai.mjs";
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
@@ -17,22 +17,16 @@ export const handler = async (event) => {
 		const prompt = body.prompt;
 
 		if (!prompt) {
-			return {
-				statusCode: 400,
-				body: JSON.stringify({
-					message: "Prompt is required",
-				}),
-			};
+			return response(400, {
+				message: "Prompt is required",
+			});
 		}
 
 		const chatRoom = await accessChatRoom(roomId, userId);
 		if (chatRoom === null) {
-			return {
-				statusCode: 400,
-				body: JSON.stringify({
-					message: "Chat room not found",
-				}),
-			};
+			return response(400, {
+				message: "Chat room not found",
+			});
 		}
 
 		// Get response from OpenAI API
@@ -67,20 +61,14 @@ export const handler = async (event) => {
 			})
 			.promise();
 
-		return {
-			statusCode: 200,
-			body: JSON.stringify({
-				prompt,
-				response: content,
-			}),
-		};
+		return response(200, {
+			prompt,
+			response: content,
+		});
 	} catch (error) {
-		return {
-			statusCode: 500,
-			body: JSON.stringify({
-				message: "Server Error",
-				error: error,
-			}),
-		};
+		return response(500, {
+			message: "Server Error",
+			error: error,
+		});
 	}
 };

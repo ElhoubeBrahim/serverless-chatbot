@@ -1,6 +1,6 @@
 import AWS from "aws-sdk";
 import { accessChatRoom } from "./access-chat-room.mjs";
-import { getCurrentUserID } from "chatbot-helpers";
+import { getCurrentUserID, response } from "chatbot-helpers";
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
@@ -24,33 +24,24 @@ export const handler = async (event) => {
 			rating < 0 ||
 			rating > 5
 		) {
-			return {
-				statusCode: 400,
-				body: JSON.stringify({
-					message: "Missing required data",
-				}),
-			};
+			return response(400, {
+				message: "Missing required data",
+			});
 		}
 
 		const chatRoom = await accessChatRoom(roomId, userId);
 		if (chatRoom === null) {
-			return {
-				statusCode: 400,
-				body: JSON.stringify({
-					message: "Chat room not found",
-				}),
-			};
+			return response(400, {
+				message: "Chat room not found",
+			});
 		}
 
 		// Find the target response index & save the rating
 		const i = chatRoom.Chat.findIndex((item) => item.ID === responseId);
 		if (i === -1) {
-			return {
-				statusCode: 400,
-				body: JSON.stringify({
-					message: "Message not found",
-				}),
-			};
+			return response(400, {
+				message: "Message not found",
+			});
 		}
 		chatRoom.Chat[i].Rating = rating;
 		chatRoom.Chat[i].Feedback = feedback;
@@ -71,19 +62,13 @@ export const handler = async (event) => {
 			})
 			.promise();
 
-		return {
-			statusCode: 200,
-			body: JSON.stringify({
-				message: "Success",
-			}),
-		};
+		return response(200, {
+			message: "Success",
+		});
 	} catch (error) {
-		return {
-			statusCode: 500,
-			body: JSON.stringify({
-				message: "Server Error",
-				error: error,
-			}),
-		};
+		return response(500, {
+			message: "Server Error",
+			error: error,
+		});
 	}
 };
