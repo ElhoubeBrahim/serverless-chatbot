@@ -19,3 +19,11 @@ export const getChatRooms = async () => {
     return null;
   }
 };
+
+export const deleteChatRoom = async (chatRoomId: string) => {
+  try {
+    return await API.del(api.name, `${api.paths.chatrooms}/${chatRoomId}`, {});
+  } catch (error) {
+    return null;
+  }
+};
