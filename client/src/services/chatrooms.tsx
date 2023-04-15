@@ -11,3 +11,11 @@ export const createChatRoom = async (chatRoom: ChatRoomRequest) => {
     return null;
   }
 };
+
+export const getChatRooms = async () => {
+  try {
+    return await API.get(api.name, api.paths.chatrooms, {});
+  } catch (error) {
+    return null;
+  }
+};

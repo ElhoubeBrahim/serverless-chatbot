@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { createChatRoom } from '../services/chatrooms';
+import { chatRoomsState } from '../store/chatrooms';
 import { chatRoomFormModalState } from '../store/modals';
 import Input from './Input';
 import Modal from './Modal';
@@ -11,22 +12,30 @@ function ChatRoomFormModal() {
   const [isOpen, setIsOpen] = useRecoilState(chatRoomFormModalState);
   const [title, setTitle] = useState('');
   const [loading, setLoading] = useState(false);
+  const setChats = useSetRecoilState(chatRoomsState);
 
   const handleSubmit = async () => {
+    // Validate title
     if (!title) {
       toast.error('Please enter chat room title');
       return;
     }
 
+    // Create chat room
     setLoading(true);
     const response = await createChatRoom({ title });
 
+    // Handle error
     if (!response) {
       toast.error('Ooops! Something went wrong. Cannot create chat room');
       setLoading(false);
       return;
     }
 
+    // Append new chat room to the list
+    setChats((old) => [response.room, ...old]);
+
+    // Close the form & show success message
     closeModal();
     toast.success('Chat room created successfully');
   };
