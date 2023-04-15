@@ -14,6 +14,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@tanstack/react-query": "^4.29.1",
     "aws-amplify": "^5.0.25",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
