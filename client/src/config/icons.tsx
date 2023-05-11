@@ -9,6 +9,7 @@ import {
   faStar,
   faTrashAlt,
   faUser,
+  faChevronDown,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -21,4 +22,5 @@ library.add(
   faStar,
   faTrashAlt,
   faUser,
+  faChevronDown,
 );

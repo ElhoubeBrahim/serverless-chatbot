@@ -15,6 +15,7 @@ function ChatMessages() {
     return null;
   }
 
+  const [scrollBtnVisible, setScrollBtnVisible] = useState(false);
   const chatRooms = useRecoilValue(chatRoomsState);
   const [chat, setChat] = useState<ChatRoom>({
     ID: '',
@@ -78,10 +79,31 @@ function ChatMessages() {
           {chat.Title}
         </div>
       </div>
-      <div className='messages pb-[200px] pt-[70px] overflow-y-auto scrollbar-hide h-full'>
+      <div
+        className='messages pb-[200px] pt-[70px] overflow-y-auto scrollbar-hide h-full'
+        onScroll={(e) => {
+          setScrollBtnVisible(
+            e.currentTarget.scrollTop < e.currentTarget.scrollHeight - e.currentTarget.clientHeight,
+          );
+        }}
+      >
         {chat.Chat && chat.Chat.map((message) => <ChatMessage chat={message} />)}
         {!chat.Chat.length && <NoMessage />}
         <div ref={bottomChatRef} />
+      </div>
+      <div className='absolute bottom-[150px] right-[-100px]'>
+        {scrollBtnVisible && (
+          <button
+            className='flex items-center justify-center w-10 h-10 rounded-full bg-light text-secondary'
+            onClick={() => {
+              bottomChatRef.current?.scrollIntoView({
+                behavior: 'smooth',
+              });
+            }}
+          >
+            <FontAwesomeIcon icon='chevron-down' />
+          </button>
+        )}
       </div>
       <div className='absolute bottom-0 left-0 right-0 w-full pt-[100px] bg-gradient-to-t from-white via-white to-transparent'>
         <Input
