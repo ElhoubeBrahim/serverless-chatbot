@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useSetRecoilState } from 'recoil';
 import { deleteChatRoom } from '../services/chatrooms';
@@ -13,6 +13,7 @@ interface ChatRoomLinkProps {
 function ChatRoomLink({ chat }: ChatRoomLinkProps) {
   const { id } = useParams();
   const setChats = useSetRecoilState(chatRoomsState);
+  const navigate = useNavigate();
 
   const handleDelete = async () => {
     if (confirm('Are you sure you want to delete this chat room?')) {
@@ -23,6 +24,7 @@ function ChatRoomLink({ chat }: ChatRoomLinkProps) {
       } else {
         toast.success('Chat room deleted successfully');
         setChats((chats) => chats.filter((c) => c.ID !== chat.ID));
+        navigate('/chat')
       }
     }
   };
