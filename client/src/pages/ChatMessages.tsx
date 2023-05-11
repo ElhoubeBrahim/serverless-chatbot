@@ -56,20 +56,18 @@ function ChatMessages() {
 
     // Get response from chatbot
     const response = await chatPrompt(id, prompt);
-    if (response) {
-      message = {
-        ID: response.ID,
-        Prompt: response.Prompt,
-        Response: response.Response,
-        Loading: false,
-        CreatedAt: response.CreatedAt,
-      };
+    message = {
+      ID: response?.ID,
+      Prompt: prompt,
+      Response: response ? response.Response : null,
+      Loading: false,
+      CreatedAt: response?.CreatedAt,
+    };
 
-      setChat((chat) => ({
-        ...chat,
-        Chat: [...chat.Chat.filter((chat) => chat.ID !== ''), message],
-      }));
-    }
+    setChat((chat) => ({
+      ...chat,
+      Chat: [...chat.Chat.filter((chat) => chat.ID !== ''), message],
+    }));
   };
 
   return (
