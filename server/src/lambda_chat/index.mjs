@@ -30,13 +30,13 @@ export const handler = async (event) => {
 		}
 
 		// Get response from OpenAI API
-		const response = await getResponse(prompt);
-		if (response.error) {
-			throw new Error(response.error.message);
+		const res = await getResponse(prompt);
+		if (res.error) {
+			throw new Error(res.error.message);
 		}
 
 		// Save response to database
-		const content = response.choices[0].text.trim();
+		const content = res.choices[0].text.trim();
 		chatRoom.Chat.push({
 			ID: uuidv4(),
 			Prompt: prompt,
@@ -46,7 +46,7 @@ export const handler = async (event) => {
 			CreatedAt: new Date().toISOString(),
 		});
 
-		await dynamodb
+		const record = await dynamodb
 			.update({
 				TableName: process.env.CHAT_ROOMS_TABLE,
 				Key: {
@@ -61,10 +61,10 @@ export const handler = async (event) => {
 			})
 			.promise();
 
-		return response(200, {
-			prompt,
-			response: content,
-		});
+		return response(
+			200,
+			record.Attributes.Chat[record.Attributes.Chat.length - 1]
+		);
 	} catch (error) {
 		return response(500, {
 			message: "Server Error",
