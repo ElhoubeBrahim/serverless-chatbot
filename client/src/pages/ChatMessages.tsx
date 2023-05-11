@@ -73,7 +73,12 @@ function ChatMessages() {
 
   return (
     <div className='h-full lg:w-2/3 mx-auto relative'>
-      <div className='messages pb-[150px] overflow-y-auto scrollbar-hide h-full'>
+      <div className='absolute top-0 left-0 right-0 w-full pb-[70px] bg-gradient-to-b from-white via-white to-transparent'>
+        <div className='p-3 border-b border-light text-xl font-title font-bold text-primary'>
+          {chat.Title}
+        </div>
+      </div>
+      <div className='messages pb-[200px] pt-[70px] overflow-y-auto scrollbar-hide h-full'>
         {chat.Chat && chat.Chat.map((message) => <ChatMessage chat={message} />)}
         {!chat.Chat.length && <NoMessage />}
         <div ref={bottomChatRef} />
