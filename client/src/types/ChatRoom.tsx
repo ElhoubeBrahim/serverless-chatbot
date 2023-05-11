@@ -4,7 +4,7 @@ interface ChatRoom {
     ID: string;
     UserID: string;
     Title: string;
-    Chats: ChatMessage[];
+    Chat: ChatMessage[];
     CreatedAt: string;
     UpdatedAt: string;
 }

@@ -19,7 +19,7 @@ function ChatMessage(props: { chat: ChatMessage }) {
         <div className='flex gap-4 p-4 py-2 rounded-lg border bg-gray-50 items-center border-primary'>
           <div className='shrink-0'>
             <img
-              src={chat.Response === null ? '/bot-avatar-error.svg' : '/bot-avatar.svg'}
+              src={'/bot-avatar.svg'}
               alt='Bot'
               className='w-10 h-10 rounded-full object-cover'
             />

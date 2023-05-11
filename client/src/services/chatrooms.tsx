@@ -27,3 +27,13 @@ export const deleteChatRoom = async (chatRoomId: string) => {
     return null;
   }
 };
+
+export const chatPrompt = async (chatRoomId: string, prompt: string) => {
+  try {
+    return await API.post(api.name, `${api.paths.chat}`, {
+      body: { room: chatRoomId, prompt },
+    });
+  } catch (error) {
+    return null;
+  }
+};
