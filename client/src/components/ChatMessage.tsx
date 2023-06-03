@@ -1,7 +1,17 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ChatMessage from '../types/ChatMessage';
+import { useState } from 'react';
 
 function ChatMessage(props: { chat: ChatMessage }) {
   const chat = props.chat;
+  const errorMessage = 'Oooops! something went wrong. Please try again later.';
+  const [copied, setCopied] = useState(false);
+
+  const copyAnswer = () => {
+    navigator.clipboard.writeText(chat.Response || errorMessage);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <div>
@@ -45,7 +55,18 @@ function ChatMessage(props: { chat: ChatMessage }) {
               className='w-10 h-10 rounded-full object-cover'
             />
           </div>
-          <div className='mt-[10px]'>{chat.Response || 'Oooops! something went wrong. Please try again later.'}</div>
+          <div className='mt-[10px] w-full'>
+            <div className='mb-4 pb-4 border-b'>
+              {chat.Response || errorMessage}
+            </div>
+            <div className='flex gap-4 pl-4'>
+              <FontAwesomeIcon
+                icon={copied ? 'check' : 'clipboard'}
+                className='text-gray-400 cursor-pointer hover:text-gray-500 transition-all'
+                onClick={copyAnswer}
+              />
+            </div>
+          </div>
         </div>
       )}
     </div>

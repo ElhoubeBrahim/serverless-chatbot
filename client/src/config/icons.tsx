@@ -10,6 +10,8 @@ import {
   faTrashAlt,
   faUser,
   faChevronDown,
+  faClipboard,
+  faCheck,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -23,4 +25,6 @@ library.add(
   faTrashAlt,
   faUser,
   faChevronDown,
+  faClipboard,
+  faCheck,
 );
