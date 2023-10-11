@@ -9,7 +9,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 const Input: FC<InputProps> = (inputProps: InputProps) => {
   let { postIcon, preIcon, label, ...props } = inputProps;
   props.className +=
-    ' p-2 w-full rounded border border-primary focus:shadow-light transition outline-none';
+    ' p-2 w-full rounded border border-primary focus:shadow-light transition outline-none dark:bg-slate-700 dark:text-white';
 
   if (preIcon) {
     props.className += ' pl-8';

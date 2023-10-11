@@ -17,7 +17,7 @@ function Sidebar({ user }: { user: any }) {
   });
 
   return (
-    <aside className='bg-secondary text-white fixed w-[400px] top-0 bottom-0'>
+    <aside className='bg-secondary text-white fixed w-[300px] top-0 bottom-0'>
       <div className='p-3 border-b border-light'>
         <PrimaryButton
           text='New Chat'

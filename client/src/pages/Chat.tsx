@@ -10,7 +10,7 @@ function Chat() {
       {(user) => (
         <div>
           <Sidebar user={user} />
-          <main className='fixed top-0 bottom-0 right-0 left-[400px]'>
+          <main className='fixed top-0 bottom-0 right-0 left-[300px]'>
             <div className='container mx-auto px-4 pb-10 h-full'>
               <Outlet />
               <ChatRoomFormModal />

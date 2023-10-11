@@ -31,7 +31,7 @@ function ChatMessage(props: { chat: ChatMessage }) {
         <div className='mt-[10px]'>{chat.Prompt}</div>
       </div>
       {chat.Loading ? (
-        <div className='flex gap-4 p-4 py-2 rounded-lg border bg-gray-50 items-center border-primary'>
+        <div className='flex gap-4 p-4 py-2 rounded-lg border bg-gray-50 dark:bg-slate-800 items-center border-primary'>
           <div className='shrink-0'>
             <img
               src={'/bot-avatar.svg'}
@@ -47,7 +47,7 @@ function ChatMessage(props: { chat: ChatMessage }) {
         </div>
       ) : (
         <div
-          className={`flex gap-4 p-4 rounded-lg border bg-gray-50 ${
+          className={`flex gap-4 p-4 rounded-lg border bg-gray-50 dark:bg-slate-800 ${
             chat.Response === null
               ? 'border-danger text-danger items-center'
               : 'border-primary items-start'

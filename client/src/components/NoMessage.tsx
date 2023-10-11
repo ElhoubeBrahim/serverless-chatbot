@@ -11,7 +11,7 @@ function NoMessage() {
   ];
 
   return (
-    <div>
+    <div className="my-10">
       <div className='flex flex-col gap-4 items-center justify-center mb-10'>
         <img src='/bot-avatar.svg' alt='Chatty' className='h-28 w-28 object-cover' />
         <div className='text-2xl text-gray-400 font-bold font-title'>
@@ -22,7 +22,7 @@ function NoMessage() {
         {prompts.map((prompt, index) => (
           <div
             key={index}
-            className='bg-gray-50 border border-primary rounded p-3 text-sm cursor-pointer hover:bg-gray-100 transition-colors'
+            className='bg-gray-50 dark:bg-slate-800 border border-primary rounded p-3 text-sm cursor-pointer hover:bg-gray-100 transition-colors'
           >
             {prompt}
           </div>

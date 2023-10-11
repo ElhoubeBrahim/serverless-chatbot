@@ -72,7 +72,7 @@ function ChatMessages() {
 
   return (
     <div className='h-full lg:w-2/3 mx-auto relative'>
-      <div className='absolute top-0 left-0 right-0 w-full pb-[70px] bg-gradient-to-b from-white via-white to-transparent'>
+      <div className='absolute top-0 left-0 right-0 w-full pb-[70px] bg-gradient-to-b from-white via-white to-transparent dark:from-slate-700 dark:via-slate-700'>
         <div className='p-3 border-b border-light text-xl font-title font-bold text-primary'>
           {chat.Title}
         </div>
@@ -92,7 +92,7 @@ function ChatMessages() {
       <div className='absolute bottom-[150px] right-[-100px]'>
         {scrollBtnVisible && (
           <button
-            className='flex items-center justify-center w-10 h-10 rounded-full bg-light text-secondary'
+            className='flex items-center justify-center w-10 h-10 rounded-full bg-light text-secondary dark:text-primary'
             onClick={() => {
               bottomChatRef.current?.scrollIntoView({
                 behavior: 'smooth',
@@ -103,7 +103,7 @@ function ChatMessages() {
           </button>
         )}
       </div>
-      <div className='absolute bottom-0 left-0 right-0 w-full pt-[100px] bg-gradient-to-t from-white via-white to-transparent'>
+      <div className='absolute bottom-0 left-0 right-0 w-full pt-[100px] bg-gradient-to-t from-white via-white to-transparent dark:from-slate-700 dark:via-slate-700'>
         <Input
           placeholder='Ask me anything ...'
           className='p-4'
@@ -113,7 +113,7 @@ function ChatMessages() {
               e.currentTarget.value = '';
             }
           }}
-          postIcon={<FontAwesomeIcon icon='paper-plane' className='text-secondary' />}
+          postIcon={<FontAwesomeIcon icon='paper-plane' className='text-secondary dark:text-primary' />}
         />
       </div>
     </div>

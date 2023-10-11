@@ -10,6 +10,11 @@ body {
   color: #444;
 }
 
+.dark body {
+  @apply bg-slate-700;
+  color: #fff;
+}
+
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }

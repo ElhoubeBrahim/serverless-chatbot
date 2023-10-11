@@ -1,8 +1,9 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import PrimaryButton from '../components/PrimaryButton';
 import WelcomeCard from '../components/WelcomeCard';
 import { chatRoomFormModalState } from '../store/modals';
+import { themeState } from '../store/theme';
 
 interface CardContent {
   icon: IconProp;
@@ -11,33 +12,34 @@ interface CardContent {
 
 function ChatHome() {
   const setChatFormModalOpen = useSetRecoilState(chatRoomFormModalState);
+  const [theme, setTheme] = useRecoilState(themeState);
   const cardContents: CardContent[] = [
     {
       icon: 'star',
-      content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla.',
+      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi.',
     },
     {
       icon: 'star',
-      content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla.',
+      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi.',
     },
     {
       icon: 'star',
-      content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla.',
+      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi.',
     },
     {
       icon: 'star',
-      content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla.',
+      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi.',
     },
   ];
 
   return (
-    <div className='lg:w-2/3 mx-auto'>
+    <div className='lg:w-2/3 mx-auto py-5'>
       <div className='flex flex-col gap-4 items-center justify-center mb-20'>
-        <img src='/logo-black.svg' alt='Chatty' className='h-24 w-24 object-cover' />
+        <img
+          src={theme === 'dark' ? '/logo-light.svg' : '/logo-black.svg'}
+          alt='Chatty'
+          className='h-24 w-24 object-cover'
+        />
         <h1 className='text-4xl font-extrabold text-center text-primary font-title'>chatty.ai</h1>
       </div>
       <div className='grid lg:grid-cols-2 gap-4 mb-10'>

@@ -12,6 +12,8 @@ import {
   faChevronDown,
   faClipboard,
   faCheck,
+  faSun,
+  faMoon,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -27,4 +29,6 @@ library.add(
   faChevronDown,
   faClipboard,
   faCheck,
+  faSun,
+  faMoon,
 );
