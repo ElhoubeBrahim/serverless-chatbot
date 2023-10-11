@@ -30,7 +30,11 @@ const Input: FC<InputProps> = (inputProps: InputProps) => {
         {preIcon && (
           <div className='absolute left-2 top-[50%] translate-y-[-50%] text-primary'>{preIcon}</div>
         )}
-        <input {...props} />
+        {props.type === 'textarea' ? (
+          <textarea {...props}>{props.value}</textarea>
+        ) : (
+          <input {...props} />
+        )}
         {postIcon && (
           <div className='absolute right-2 top-[50%] translate-y-[-50%] text-primary'>
             {postIcon}

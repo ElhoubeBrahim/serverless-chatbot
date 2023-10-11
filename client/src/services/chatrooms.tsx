@@ -37,3 +37,18 @@ export const chatPrompt = async (chatRoomId: string, prompt: string) => {
     return null;
   }
 };
+
+export const rateResponse = async (
+  chatRoomId: string,
+  responseId: string,
+  rating: number,
+  feedback: string,
+) => {
+  try {
+    return await API.post(api.name, `${api.paths.chat}${api.paths.rate}`, {
+      body: { room: chatRoomId, response: responseId, rating, feedback },
+    });
+  } catch (error) {
+    return null;
+  }
+};

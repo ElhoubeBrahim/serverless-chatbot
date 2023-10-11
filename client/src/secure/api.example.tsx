@@ -4,5 +4,7 @@ export default {
   name: '<your-api-gateway-name>',
   paths: {
     chatrooms: '/rooms',
+    chat: '/chat',
+    rate: '/rate',
   },
 };

@@ -1,11 +1,16 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ChatMessage from '../types/ChatMessage';
 import { useState } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { RateResponseModalState } from '../store/modals';
+import { useParams } from 'react-router-dom';
 
 function ChatMessage(props: { chat: ChatMessage }) {
+  const { id } = useParams();
   const chat = props.chat;
   const errorMessage = 'Oooops! something went wrong. Please try again later.';
   const [copied, setCopied] = useState(false);
+  const setRateResponseModalOpen = useSetRecoilState(RateResponseModalState);
 
   const copyAnswer = () => {
     navigator.clipboard.writeText(chat.Response || errorMessage);
@@ -64,6 +69,15 @@ function ChatMessage(props: { chat: ChatMessage }) {
                 icon={copied ? 'check' : 'clipboard'}
                 className='text-gray-400 cursor-pointer hover:text-gray-500 transition-all'
                 onClick={copyAnswer}
+              />
+              <FontAwesomeIcon
+                icon='star'
+                className='text-gray-400 cursor-pointer hover:text-gray-500 transition-all'
+                onClick={() => setRateResponseModalOpen({
+                  roomId: id as string,
+                  responseId: chat.ID,
+                  isOpen: true,
+                })}
               />
             </div>
           </div>
