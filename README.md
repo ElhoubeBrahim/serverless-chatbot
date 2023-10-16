@@ -42,10 +42,10 @@ Inside the `server` folder, create an `env.json` file. This file will hold your 
 }
 ```
 
-In the `server` folder, execute the following command to deploy the API to AWS: 
+In the `server` folder, you can run the `./scripts/deploy.py` script to deploy the backend services. Alternatively, you can use the following command:
 
 ```bash
-sam deploy --template-file template.yaml --stack-name chatbot --parameter-overrides $(cat env.json)
+sam deploy --parameter-overrides $(cat env.json)
 ```
 
 Once the deployment is successful, you can view the services in the AWS Console.
